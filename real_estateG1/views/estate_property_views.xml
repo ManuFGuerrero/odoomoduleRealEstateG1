@@ -23,6 +23,12 @@
                     <filter string="Mis Propiedades" name="filter_my_properties" domain="[('create_uid','=',uid)]" />
 
                     <filter string="Agrupar por Usuario" name="groupby_users" context="{'group_by':'create_uid'}"/>
+
+                    <filter string="Agrupar por fecha" name="groupby_date" context="{'group_by':'create_date:date'}"/>  
+
+                    <filter string="Agrupar por codigo postal" name="groupby_postcode" context="{'group_by':'postcode'}"/>
+ 
+                                    
                 </search>
             </field>
         </record>
