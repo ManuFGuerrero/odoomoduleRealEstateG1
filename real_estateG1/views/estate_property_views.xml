@@ -28,7 +28,11 @@
 
                     <filter string="Agrupar por codigo postal" name="groupby_postcode" context="{'group_by':'postcode'}"/>
  
-                                    
+                    <filter string="Agrupar por estado" name="groupby_state" context="{'group_by':'state'}"/>
+                       
+                    <filter string="Agrupar por propiedades disponibles" name="filter_avalible_properties" domain="[('state','in',['new','offer received'])]"/>
+
+
                 </search>
             </field>
         </record>
@@ -56,20 +60,38 @@
             <field name ="model">estate.property</field>
             <field name ="arch" type="xml">
                 <form string="Formulario para propieades">
+                
                     <header>
                     <field name="state" widget="statusbar"/>
                     </header>
 
                     <sheet>
+                        <group>
+                            <h1>
+                                <field name="name" placeholder="Nombre de propiedad"/>
+                             </h1>
+                        </group>
+                        <group>
+                        <group>
+                            <field name="postcode" placeholder="Codigo postal"/>
+                            <field name="date_availability" placeholder="Fecha de disponibilidad"/>
+                            <field name="description" placeholder="Habitaciones"/>
+                            <field name="living_area" placeholder="Superficie cubierta"/>
+                            <field name="bedrooms" placeholder="Habitaciones"/>
+                            <field name="facades" placeholder="Fachadas"/>
+                            <field name="garage" placeholder="Garage"/>
+                            
+                        </group> 
 
-                    <group>
+                        <group>
+                        <field name="expected_price" placeholder="Precio de venta esperado"/>
+                        <field name="selling_price" placeholder="Precio de venta"/>
+                        <field name="garden" placeholder="Jardin"/>
+                        <field name="garden_orientation" placeholder="Orientacion de jardin"/>
+                        <field name="garden_area" placeholder="Area de jardin"/>
+                        </group>
 
-                        <h1>
-                            <field name="name" placeholder="introducir el nombre"/>
-                        </h1>
-                        
                     </group>
-
 
                     </sheet>
 

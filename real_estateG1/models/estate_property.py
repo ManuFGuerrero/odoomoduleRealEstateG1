@@ -30,12 +30,13 @@ class EstateProperty(models.Model):
     )
     garden_area = fields.Integer(string="Superficie del jardín")  
     state = fields.Selection(
-        selection=[('new','nuevo'),
-                  ('offer received','oferta recibida'),
-                   ('offer accepted','oferta aceptada'),
-                   ('sold','vendido'),
-                   ('canceled','candelado')],
+        selection=[('new','Nuevo'),
+                  ('offer received','Oferta recibida'),
+                   ('offer accepted','Oferta aceptada'),
+                   ('sold','Vendido'),
+                   ('canceled','Cancelado')],
         default ="new",           
         strings="estado",
-        copy = False
+        copy = False,
+        required =True
     )
