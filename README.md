@@ -36,6 +36,11 @@ Los grupos y sus permisos es mejor definirlos por código, ya que persisten mejo
 ### Punto 15
 Solo los usuarios que pertenecen a algún grupo con permisos explícitos en **ir.model.access.csv** son los pueden interactuar con el modelo **estate.property**. Los usuarios que no pertenezcan a ningún grupo con acceso quedan bloqueados.
 
+### Punto 18
+Al duplicar el registro solo ocurrio lo esperado, lo duplico tal cual sin alguna diferencia alguna
+
+### Punto 19
+Se realiza el duplicado pero con la diferencia que los campos donde agregamos "copy=False", no se duplicaron al crear el registro nuevo
 
 
 
