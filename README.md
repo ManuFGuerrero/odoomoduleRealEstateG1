@@ -40,7 +40,7 @@ Solo los usuarios que pertenecen a algún grupo con permisos explícitos en **ir
 Al duplicar el registro solo ocurrio lo esperado, lo duplico tal cual sin alguna diferencia alguna
 
 ### Punto 19
-Se realiza el duplicado pero con la diferencia que los campos donde agregamos "copy=False", no se duplicaron al crear el registro nuevo
+Se realiza el duplicado pero con la diferencia de que los campos donde agregamos "copy=False" no se duplicaron.
 
 
 
