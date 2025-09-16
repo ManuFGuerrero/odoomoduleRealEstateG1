@@ -36,7 +36,25 @@ class EstateProperty(models.Model):
                    ('sold','Vendido'),
                    ('canceled','Cancelado')],
         default ="new",           
-        strings="estado",
+        string="estado",
         copy = False,
         required =True
     )
+    property_type_id = fields.Many2one(
+        comodel_name ='estate.property.type',
+        string ='Tipo propiedad',
+        required = True
+    )
+    buyer_id = fields.Many2one(
+        comodel_name ='res.partner',   #es un campo propio de odoo que se utiliza para representar cualquier entidad con la que interactua nuestra empresa
+        string = 'Comprador',
+    )    
+    salesman_id = fields.Many2one(
+        comodel_name ='res.users',  #representa a las personas que tienen acceso al sistema odoo ej: nosotros creando un registro en el back
+        string ='Vendedor',
+        copy= False,
+        default=lambda self: self.env.user,  # usuario logueado por defecto
+
+    )
+
+    
