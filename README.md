@@ -42,5 +42,10 @@ Al duplicar el registro solo ocurrio lo esperado, lo duplico tal cual sin alguna
 ### Punto 19
 Se realiza el duplicado pero con la diferencia de que los campos donde agregamos "copy=False" no se duplicaron.
 
+### Punto 35
+Se utiliza el campo many2many porque la relacion entre propiedades y etiquetas permite que mas de 1 propiedad tenga asignada la misma etiqueta, como tambien permite que mas de una etiqueta tenga asignada la misma propiedad, esa relacion se guarda dentro de la tabla intermedia generada por el ORM, donde los atributos son las 2 FK a las tablas relacionadas, permitiendo tener un registro de estas relaciones sin perder datos.
+
+
+
 
 

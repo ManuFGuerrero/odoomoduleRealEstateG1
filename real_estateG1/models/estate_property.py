@@ -4,7 +4,7 @@ from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):   
     _name = 'estate.property'
-    _description = 'Propiedades'
+    _description = 'Propiedad'
 
     name = fields.Char(string="Título", required=True)
     description = fields.Text(string="Descripción")  
@@ -55,6 +55,10 @@ class EstateProperty(models.Model):
         copy= False,
         default=lambda self: self.env.user,  # usuario logueado por defecto
 
+    )
+    tag_ids= fields.Many2many(
+        'estate.property.tag',
+        string="Etiquetas"
     )
 
     

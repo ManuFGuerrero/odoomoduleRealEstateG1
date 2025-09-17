@@ -4,7 +4,17 @@
         <record id="estate_property_type_action" model="ir.actions.act_window">
             <field name="name">Tipos de propiedad</field>
             <field name="res_model">estate.property.type</field> <!-- modelo al que responde -->
-            <field name="view_mode">list,form</field> <!-- accion a realizar -->
+            <field name="view_mode">list</field> <!-- accion a realizar -->
+        </record>
+
+        <record id="estate_property_type_list" model="ir.ui.view">
+            <field name ="name">estate.property.type.list</field>
+            <field name ="model">estate.property.type</field>
+            <field name ="arch" type="xml">
+               <list string="Lista de Tipos de propiedades" editable="top">
+                    <field name ="name"/>
+               </list>
+            </field>
         </record>
     </data>
 </odoo>

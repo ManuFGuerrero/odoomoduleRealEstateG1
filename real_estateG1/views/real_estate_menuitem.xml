@@ -16,6 +16,7 @@
             <menuitem id = "menu_real_estate_settings" name = "Ajustes">
                 
                 <menuitem id = "menu_estate_property_action_2" action = "estate_property_type_action"/> <!-- Definimos la accion en el menu de acciones -->
+                <menuitem id = "menu_estate_property_action_3" action = "estate_property_tag_action"/> <!-- Definimos la accion en el menu de acciones -->
 
             </menuitem>
 
