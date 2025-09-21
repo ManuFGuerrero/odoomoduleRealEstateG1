@@ -36,6 +36,21 @@ Los grupos y sus permisos es mejor definirlos por código, ya que persisten mejo
 ### Punto 15
 Solo los usuarios que pertenecen a algún grupo con permisos explícitos en **ir.model.access.csv** son los pueden interactuar con el modelo **estate.property**. Los usuarios que no pertenezcan a ningún grupo con acceso quedan bloqueados.
 
+### Punto 18
+Al duplicar el registro solo ocurrio lo esperado, lo duplico tal cual sin alguna diferencia alguna
+
+### Punto 19
+Se realiza el duplicado pero con la diferencia de que los campos donde agregamos "copy=False" no se duplicaron.
+
+### Punto 35
+Se utiliza el campo many2many porque la relacion entre propiedades y etiquetas permite que mas de 1 propiedad tenga asignada la misma etiqueta, como tambien permite que mas de una etiqueta tenga asignada la misma propiedad, esa relacion se guarda dentro de la tabla intermedia generada por el ORM, donde los atributos son las 2 FK a las tablas relacionadas, permitiendo tener un registro de estas relaciones sin perder datos.
+
+### Punto 39
+1) "inverse_name" hay que especificarlo porque el campo One2many no guarda nada. Solo se muestra los registros (estate_property_offer) que apuntan a la propiedad a través de su Many2one (property_id).
+
+2) El One2many es virtual porque no crea una columna en estate.property. Los datos reales están en el lado Many2one (estate_property_offer.property_id) y el One2many lo refleja.
+
+
 
 
 
