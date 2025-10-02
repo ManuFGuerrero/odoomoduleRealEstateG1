@@ -64,9 +64,22 @@
             <field name ="model">estate.property</field>
             <field name ="arch" type="xml">
 
-                <form string="Formulario para propieades">
+                <form string="Formulario para propiedades">
                 
                     <header>
+
+                        <button name="action_mark_as_sold"
+                                type="object"
+                                string="Marcar como Vendida"
+                                class="btn-primary"
+                                />
+
+                        <button name="action_cancel"
+                                type="object"
+                                string="Cancelar Propiedad"
+                                class="btn-secondary"
+                                />
+
                         <field name="state" widget="statusbar"/>
                     </header>
 

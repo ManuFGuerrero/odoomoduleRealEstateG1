@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -19,7 +20,7 @@ class EstateProperty(models.Model):
         default = date.today()+ relativedelta(months=3)
         ) 
     
-    expected_price = fields.Float(string="Precio esperado")
+    expected_price = fields.Float(string="Precio esperado", onchange="on_change_expected_price")
 
     selling_price = fields.Float(string="Precio de venta",copy=False) 
 
@@ -31,7 +32,7 @@ class EstateProperty(models.Model):
 
     garage = fields.Boolean(string="Garage")  
 
-    garden = fields.Boolean(string="Jardín")  
+    garden = fields.Boolean(string="Jardín", onchange="on_change_garden")  
 
     garden_orientation = fields.Selection(
         selection=[('north','Norte'),
@@ -48,7 +49,7 @@ class EstateProperty(models.Model):
         selection=[('new','Nuevo'),
                   ('offer received','Oferta recibida'),
                    ('offer accepted','Oferta aceptada'),
-                   ('sold','Vendido'),
+                   ('sold','Vendida'),
                    ('canceled','Cancelado')],
         default ="new",           
         string="estado",
@@ -112,4 +113,30 @@ class EstateProperty(models.Model):
             else:
                 rec.best_offer = 0
                
+    @api.onchange('garden')
+    def _on_change_garden(self):
+        if self.garden:
+            self.garden_area=10
+        else:
+            self.garden_area=0
             
+    @api.onchange('expected_price')
+    def _on_change_expected_price(self):
+        if self.expected_price < 10000 :
+            return { 'warning': {'title': "Advertencia", 'message': "El precio ingresado es bajo", 'type': 'notification'},}
+        
+# --------------------------------------- ACCIONES ----------------------------------------------------------
+    def action_mark_as_sold(self):
+        for record in self:
+            if record.state == 'canceled':
+                raise UserError("No se puede marcar como vendida una propiedad cancelada.")
+            record.state = 'sold'
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("No se puede cancelar una propiedad vendida.")
+            record.state = 'canceled'
+
+
+                

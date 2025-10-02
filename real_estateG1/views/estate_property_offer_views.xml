@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
+        <record id="estate_property_offer_action" model="ir.actions.act_window">
+            <field name="name">Ofertas de propiedades</field>
+            <field name="res_model">estate.property.offer</field> <!-- modelo al que responde -->
+            <field name="view_mode">list</field> <!-- accion a realizar -->
+        </record>
+
+
         <record id="estate_property_offer_list" model="ir.ui.view">
             <field name ="name">estate.property.offer.list</field>
             <field name ="model">estate.property.offer</field>
             <field name ="arch" type="xml">
-               <list string="Lista de propiedades">
+               <list string="Lista de ofertas">
                     <field name ="name"/>
                     <field name ="price"/>
                     <field name ="status"/>
@@ -14,5 +22,9 @@
                </list>
             </field>
         </record>
+
+        
+
+
     </data>
 </odoo>
