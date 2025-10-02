@@ -59,72 +59,76 @@
 
 
         <record id="estate_property_form" model="ir.ui.view">
+
             <field name ="name">estate.property.form</field>
             <field name ="model">estate.property</field>
             <field name ="arch" type="xml">
+
                 <form string="Formulario para propieades">
                 
                     <header>
-                    <field name="state" widget="statusbar"/>
+                        <field name="state" widget="statusbar"/>
                     </header>
 
                     <sheet>
-
-                    <notebook>
-                        <page string="Principal"> 
+                        <group>
+                            <h1>
+                                <field name="name" placeholder="Nombre propiedad"/>
+                            </h1>
+                        </group>
+                        <group>
+                            <h3>
+                                <field name="tag_ids" placeholder="Etiquetas de propiedad" widget="many2many_tags"/>
+                            </h3>
+                        </group>
+                        <group>
                             <group>
-                                <h1>
-                                    <field name="name" placeholder="Nombre de propiedad"/>
-                                </h1>
-
+                                <field name="property_type_id" placeholder="Tipo propiedad"/>
+                                <field name="postcode"/>
+                                <field name="date_availability"/>
                             </group>
                             <group>
-                                <h3>
-                                    <field name="tag_ids" placeholder="Etiquetas de propiedad" widget="many2many_tags"/>
-                                </h3>
-
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                                <field name="best_offer"/>
                             </group>
+                        </group>
 
-                            <group>
-                                <group>
-                                    <field name="property_type_id" placeholder="Tipo propiedad"/>
-                                    <field name="postcode" placeholder="Codigo postal"/>
-                                    <field name="date_availability" placeholder="Fecha de disponibilidad"/>
-                                    <field name="description" placeholder="Habitaciones"/>
-                                    <field name="living_area" placeholder="Superficie cubierta"/>
-                                    <field name="bedrooms" placeholder="Habitaciones"/>
-                                    <field name="facades" placeholder="Fachadas"/>
-                                    <field name="garage" placeholder="Garage"/>
-                                    
-                                </group> 
 
+                        <notebook>
+                            <page string="Descripción"> 
                                 <group>
-                                <field name="expected_price" placeholder="Precio de venta esperado"/>
-                                <field name="selling_price" placeholder="Precio de venta"/>
-                                <field name="garden" placeholder="Jardin"/>
-                                <field name="garden_orientation" placeholder="Orientacion de jardin"/>
-                                <field name="garden_area" placeholder="Area de jardin"/>
+                                    <group>
+                                        <field name="description" placeholder="Descripcion" widget="text"/>
+                                        <field name="living_area" placeholder="Superficie cubierta"/>
+                                        <field name="bedrooms" placeholder="Habitaciones" />
+                                        <field name="facades" placeholder="Fachadas"/>
+                                        <field name="garage" placeholder="Garage"/>
+                                    </group> 
+                                    <group>
+                                        <field name="garden" placeholder="Jardin"/>
+                                        <field name="garden_orientation" placeholder="Orientacion de jardin"/>
+                                        <field name="garden_area" placeholder="Area de jardin"/>
+                                        <field name="total_area"/>
+                                        
+                                    </group>
                                 </group>
-                           </group>
-                        
-                        </page>
+                            </page>
 
-                        <page string="Mas Info">
-                            <group>
-                                <field name="buyer_id"/>
-                                <field name="salesman_id"/>
-                            </group>
-                        </page>
+                            <page string="Mas Info">
+                                <group>
+                                    <field name="buyer_id"/>
+                                    <field name="salesman_id"/>
+                                </group>
+                            </page>
 
-                        <page string="Ofertas">
-                            
-                            <field name="offer_ids"/>
-                            
-                        </page>
-
-                    </notebook>
+                            <page string="Ofertas">
+                                
+                                <field name="offer_ids"/>
+                                
+                            </page>
+                        </notebook>
                     </sheet>
-
                 </form>
             </field>
 

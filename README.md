@@ -11,7 +11,7 @@ Para poder visualizar el desarrollor del módulo: ingresar como superusuario o b
 
 **3) Agregar Mitchell Admin al grupo "Manager de Propiedades".** Settings --> Users and Companies --> Groups --> Inmobiliara / Manager de Propiedades --> Add a line --> Mitchell Admin
 
-## Teoría
+## Unidad 1
 
 ### Punto 4
 Al crear un modelo, en nuestro caso "estate_property", se agregan por defecto algunos campo adicionales. Los cuales son: **id** (integer), **create_uid** (integer), **write_uid** (integer), **create_date** (timestamp without time zone) y **write_date** (timestamp without time zone).
@@ -50,6 +50,21 @@ Se utiliza el campo many2many porque la relacion entre propiedades y etiquetas p
 
 2) El One2many es virtual porque no crea una columna en estate.property. Los datos reales están en el lado Many2one (estate_property_offer.property_id) y el One2many lo refleja.
 
+
+## Unidad 2
+### Punto 3
+
+ El campo no se ve reflejado en la tabla de pgweb porque es un campo computado y se calcula cada vez que se llama desde la vista. No se persiste porque hasta el momento no se indicó "store = true" que por defecto está en false. 
+
+### Punto 5
+Si al campo computado le agregamos "store = true" este se calculará solamente una única vez y luego cada vez que se llame desde la vista se consultará desde la base de datos.
+
+Además del "store = true" para persistir el campo con su valor, hay que utilizar el decorador "@api.depends()" para establecer la dependencia con otros campos y que se calcule cada vez que se llama desde la vista.
+
+### Punto 5
+Al campo "best_offer" creo que es bueno almacenarlo para no tener que estar buscando el valor máximo cada vez que se ejecuta. En caso de que crezca mucho la cantidad de ofertas, el costo del cómputo será muy grande, por eso conviene almacenarlo. La desventaja se encuentra en que cada vez que se agrega una nueva oferta, el campo "best_offer"  debe calcularse y persistirse.
+
+Por otra parte, si en un futuro queremos visualizar el campo en una lista no se tiene que calcular por cada llamado y se consulta directamente de la base de datos. 
 
 
 
