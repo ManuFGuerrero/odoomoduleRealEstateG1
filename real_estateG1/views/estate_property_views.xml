@@ -84,6 +84,7 @@
                     </header>
 
                     <sheet>
+                    
                         <group>
                             <h1>
                                 <field name="name" placeholder="Nombre propiedad"/>
