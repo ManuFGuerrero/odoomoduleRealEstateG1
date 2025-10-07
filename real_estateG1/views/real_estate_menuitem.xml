@@ -20,6 +20,12 @@
 
             </menuitem>
 
+            <menuitem id = "menu_real_estate_offers" name = "Ofertas">
+                
+                    <menuitem id = "menu_estate_property_action_4" action = "estate_property_offer_action"/> <!-- Definimos la accion en el menu de acciones -->
+  
+            </menuitem>
+
         </menuitem>
     </data>
 </odoo>
