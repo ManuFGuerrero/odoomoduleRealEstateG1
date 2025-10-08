@@ -33,11 +33,11 @@ class EstatePropertyOffer(models.Model):
 
 # --------------------------------------- COMPUTADOS ----------------------------------------------------------
   
-    @api.depends("create_date", "validity")
+    @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
-            if record.create_date and record.validity:
-                record.date_deadline = (record.create_date + timedelta(days=record.validity))
+            if record.validity:
+                record.date_deadline = fields.Datetime.now() + timedelta(days=record.validity)
             else:
                 record.date_deadline = False
 
@@ -47,6 +47,18 @@ class EstatePropertyOffer(models.Model):
                 delta = record.date_deadline - record.create_date.date()
                 record.validity = delta.days
                 
+
+
+#Onchange creado para que la interfaz sea mas "amigable", no habia mucha performance en que la validity se actualice tarde
+
+    @api.onchange('date_deadline')
+    def _on_change_date_deadline(self):
+        for record in self:
+            if fields.Datetime.now() and record.date_deadline:
+                delta = record.date_deadline - fields.Datetime.now().date()
+                record.validity = max(delta.days, 0)  # Para evitar numeros negativos
+            else:
+                record.validity = 0
                 
 # --------------------------------------- ACCIONES ----------------------------------------------------------
     def action_accept_offer(self):
