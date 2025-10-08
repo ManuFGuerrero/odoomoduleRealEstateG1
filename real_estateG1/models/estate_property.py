@@ -122,16 +122,18 @@ class EstateProperty(models.Model):
             
     @api.onchange('expected_price')
     def _on_change_expected_price(self):
-        if self.expected_price < 10000 :
-            return { 'warning': {'title': "Advertencia", 'message': "El precio ingresado es bajo", 'type': 'notification'},}
-        
+        result={}
+        if self.expected_price  and self.expected_price < 10000 :
+            raise UserError("El precio ingresado es bajo.")
+        return result      
+
 # --------------------------------------- ACCIONES ----------------------------------------------------------
     def action_mark_as_sold(self):
         for record in self:
             if record.state == 'canceled':
                 raise UserError("No se puede marcar como vendida una propiedad cancelada.")
             record.state = 'sold'
-            return True
+        return True
 
     def action_cancel(self):
         for record in self:
@@ -139,7 +141,7 @@ class EstateProperty(models.Model):
                 raise UserError("No se puede cancelar una propiedad vendida.")
             record.state = 'canceled'
         return True
-
+ 
 
 
 
