@@ -81,3 +81,11 @@ class EstatePropertyOffer(models.Model):
     #Por default todas estan en reject, no hace falta rechazarlas
     #def action_reject_offers(self, accepted_offer):
     #   self.filtered(lambda o: o.property_id == accepted_offer.property_id and o.id != accepted_offer.id).write({"status": "refused"})   
+
+
+
+    #Constraints
+
+    _sql_constraints = [
+    ('unique_offer', 'UNIQUE(partner_id, property_id)', 'Una persona solo puede realizar una unica oferta por cada propiedad.')
+]

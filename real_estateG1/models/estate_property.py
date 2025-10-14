@@ -1,7 +1,8 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, Command
 from odoo.exceptions import UserError
 from datetime import date
 from dateutil.relativedelta import relativedelta
+import random
 
 class EstateProperty(models.Model):   
     _name = 'estate.property'
@@ -141,6 +142,48 @@ class EstateProperty(models.Model):
         return True
  
 
+    def action_random_offer(self):
+        for record in self:
+
+            #Obtener todos los partners activos
+            all_partners = self.env['res.partner'].search([('active','=',True)])
+        
+            #Filtrar los que aún no hicieron oferta para esta propiedad
+            eligible_partners = all_partners.filtered(lambda p: p not in record.offer_ids.mapped('partner_id'))
+            if not eligible_partners:
+                raise UserError("No hay partners elegibles para crear una oferta.")
+        
+            #Elegir uno aleatorio
+            partner = random.choice(eligible_partners)
+
+            price_random = record.expected_price * (1 + random.uniform(-0.3, 0.3))
 
 
-                
+            self.env['estate.property.offer'].create({
+             'name':"oferta aleatoria", 
+             'price': round(price_random,2),
+             'partner_id': partner.id, 
+             'property_id': record.id,  #Relaciona la oferta con la propiedad actual
+             'validity': 7,
+           })
+        return True
+    
+    def action_remove_tags(self):       
+         for record in self:
+            record.tag_ids = [Command.unlink(tag.id) for tag in record.tag_ids]
+         return True     
+    
+
+    def action_brand_new(self):
+        tag = self.env['estate.property.tag'].search([('name', '=', 'A estrenar')], limit=1)
+        if not tag:
+            tag = self.env['estate.property.tag'].create({'name': 'A estrenar'})
+        self.tag_ids = [Command.link(tag.id)]
+        return True
+    
+
+    def action_all_tags(self):
+        tags = self.env['estate.property.tag'].search([])
+        for record in self:
+            record.tag_ids = [Command.link(tag.id) for tag in tags]
+        return True
