@@ -91,24 +91,26 @@ class EstatePropertyOffer(models.Model):
     ]
 
 
-    # @api.model_create_multi
-    # def create(self, vals_list):
-
-    #     import wdb
-    #     wdb.set_trace()
+    @api.model_create_multi
+    def create(self, vals_list):
         
-    #     for vals in vals_list:
+        for vals in vals_list:
 
-    #         property_id = self.env["estate.property"].browse(vals["property_id"])
-    #         offer_ids = property_id.offer_ids 
+            property_id = self.env["estate.property"].browse(vals["property_id"])
+            offer_ids = property_id.offer_ids 
 
-    #         if offer_ids:
-    #             max_price = max(offer_ids.mapped("price") or [0])
+            if(property_id.state == "new" or property_id.state == "offer received"):
 
-    #             if vals["price"] < max_price:
-    #                 raise UserError("No se puede crear una oferta con valor menor a la mejor oferta existente.")
-    #         else:
-                
-    #             property_id.write({"state": "offer_received"})
+                if offer_ids:
+                    max_price = max(offer_ids.mapped("price") or [0])
 
-    #     return super().create(vals_list)
+                    if vals["price"] < max_price:
+                        raise UserError("No se puede crear una oferta con valor menor a la mejor oferta existente.")
+                else:
+                    
+                    property_id.write({"state": "offer received"})
+                    
+            else:
+                raise UserError("Esta propiedad tiene que ser 'nueva' o 'oferta recibida'")
+
+        return super().create(vals_list)
