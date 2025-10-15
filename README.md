@@ -67,5 +67,9 @@ Al campo "best_offer" creo que es bueno almacenarlo para no tener que estar busc
 Por otra parte, si en un futuro queremos visualizar el campo en una lista no se tiene que calcular por cada llamado y se consulta directamente de la base de datos. 
 
 
+### Punto 22
+Usar @api.ondelete() es más conveniente que poner la validación en la lógica de negocio porque este decorador actúa a nivel del ORM, garantizando que ningún proceso —ni directo ni indirecto— pueda eliminar registros no permitidos, manteniendo las capas bien separadas y el código más seguro, coherente y mantenible.
+
+
 
 

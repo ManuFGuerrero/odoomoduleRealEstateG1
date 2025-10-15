@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 from datetime import timedelta, date
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -88,4 +88,27 @@ class EstatePropertyOffer(models.Model):
 
     _sql_constraints = [
     ('unique_offer', 'UNIQUE(partner_id, property_id)', 'Una persona solo puede realizar una unica oferta por cada propiedad.')
-]
+    ]
+
+
+    # @api.model_create_multi
+    # def create(self, vals_list):
+
+    #     import wdb
+    #     wdb.set_trace()
+        
+    #     for vals in vals_list:
+
+    #         property_id = self.env["estate.property"].browse(vals["property_id"])
+    #         offer_ids = property_id.offer_ids 
+
+    #         if offer_ids:
+    #             max_price = max(offer_ids.mapped("price") or [0])
+
+    #             if vals["price"] < max_price:
+    #                 raise UserError("No se puede crear una oferta con valor menor a la mejor oferta existente.")
+    #         else:
+                
+    #             property_id.write({"state": "offer_received"})
+
+    #     return super().create(vals_list)
