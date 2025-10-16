@@ -83,12 +83,36 @@
                                 invisible="state in ['sold', 'canceled']"
                                 />
 
+                        <button name = "action_random_offer"
+                                type = "object"
+                                string = "Crear oferta aleatoria"
+                                class="btn-secondary"
+                        />
+
+                        <button name = "action_remove_tags"
+                                type = "object"
+                                string = "eliminar etiquetas"
+                                class="btn-secondary"
+                        />
+
+                        <button name = "action_brand_new"
+                                type = "object"
+                                string = "A estrenar"
+                                class="btn-secondary"
+                        />
+
+                        <button name = "action_all_tags"
+                                type = "object"
+                                string = "Agregar todas las etiquetas"
+                                class="btn-secondary"
+                        />
+
                         <field name="state" widget="statusbar"/>
                     </header>
 
                     <sheet>
                         <widget  name="web_ribbon" title="Vendida" bg_color="text-bg-success"
-                            attrs="{'invisible': [('state', '!=', 'sold')]}"/>
+                            invisible="state != 'sold'"/>
                         <group>
                             <h1>
                                 <field name="name" placeholder="Nombre propiedad"/>
