@@ -1,7 +1,7 @@
 {
     'name': 'Inmobiliaria',
     'version': '1.0',
-    'author': 'Ramiro',
+    'author': 'Alfredo, Ramiro, Manuel',
     'category': 'Real Estate',
     'depends': ['base'],
     'data': [
