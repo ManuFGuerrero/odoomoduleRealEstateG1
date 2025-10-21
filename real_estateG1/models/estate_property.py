@@ -1,7 +1,8 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, Command
 from odoo.exceptions import UserError
 from datetime import date
 from dateutil.relativedelta import relativedelta
+import random
 
 class EstateProperty(models.Model):   
     _name = 'estate.property'
@@ -122,16 +123,16 @@ class EstateProperty(models.Model):
             
     @api.onchange('expected_price')
     def _on_change_expected_price(self):
-        if self.expected_price < 10000 :
-            return { 'warning': {'title': "Advertencia", 'message': "El precio ingresado es bajo", 'type': 'notification'},}
-        
+        if self.expected_price and self.expected_price != 0 and self.expected_price < 10000 :
+            raise UserError("El precio ingresado es bajo.")
+
 # --------------------------------------- ACCIONES ----------------------------------------------------------
     def action_mark_as_sold(self):
         for record in self:
             if record.state == 'canceled':
                 raise UserError("No se puede marcar como vendida una propiedad cancelada.")
             record.state = 'sold'
-            return True
+        return True
 
     def action_cancel(self):
         for record in self:
@@ -139,8 +140,58 @@ class EstateProperty(models.Model):
                 raise UserError("No se puede cancelar una propiedad vendida.")
             record.state = 'canceled'
         return True
+ 
+
+    def action_random_offer(self):
+        for record in self:
+
+            #Obtener todos los partners activos
+            all_partners = self.env['res.partner'].search([('active','=',True)])
+        
+            #Filtrar los que aún no hicieron oferta para esta propiedad
+            eligible_partners = all_partners.filtered(lambda p: p not in record.offer_ids.mapped('partner_id'))
+            if not eligible_partners:
+                raise UserError("No hay partners elegibles para crear una oferta.")
+        
+            #Elegir uno aleatorio
+            partner = random.choice(eligible_partners)
+
+            price_random = record.expected_price * (1 + random.uniform(-0.3, 0.3))
 
 
+            self.env['estate.property.offer'].create({
+             'name':"oferta aleatoria", 
+             'price': round(price_random,2),
+             'partner_id': partner.id, 
+             'property_id': record.id,  #Relaciona la oferta con la propiedad actual
+             'validity': 7,
+           })
+        return True
+    
+    def action_remove_tags(self):       
+         for record in self:
+            record.tag_ids = [Command.unlink(tag.id) for tag in record.tag_ids]
+         return True     
+    
+
+    def action_brand_new(self):
+        tag = self.env['estate.property.tag'].search([('name', '=', 'A estrenar')], limit=1)
+        if not tag:
+            tag = self.env['estate.property.tag'].create({'name': 'A estrenar'})
+        self.tag_ids = [Command.link(tag.id)]
+        return True
+    
+
+    def action_all_tags(self):
+        tags = self.env['estate.property.tag'].search([])
+        for record in self:
+            record.tag_ids = [Command.link(tag.id) for tag in tags]
+        return True
+    
 
 
-                
+    #Solo se permite borrar propiedades en estado "New" o "Canceled"
+    @api.ondelete(at_uninstall = False)
+    def _unlink_if_new_or_cancelled (self):
+        if any(p.state not in ["new", "canceled"] for p in self):
+            raise UserError("Solo se pueden eliminar las propiedades cuando el estado es 'New' o 'Canceled'")

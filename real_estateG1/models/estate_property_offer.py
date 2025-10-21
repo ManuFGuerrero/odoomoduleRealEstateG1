@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 from datetime import timedelta, date
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -33,11 +33,11 @@ class EstatePropertyOffer(models.Model):
 
 # --------------------------------------- COMPUTADOS ----------------------------------------------------------
   
-    @api.depends("create_date", "validity")
+    @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
-            if record.create_date and record.validity:
-                record.date_deadline = (record.create_date + timedelta(days=record.validity))
+            if record.validity:
+                record.date_deadline = fields.Datetime.now() + timedelta(days=record.validity)
             else:
                 record.date_deadline = False
 
@@ -47,6 +47,18 @@ class EstatePropertyOffer(models.Model):
                 delta = record.date_deadline - record.create_date.date()
                 record.validity = delta.days
                 
+
+
+#Onchange creado para que la interfaz sea mas "amigable", no habia mucha performance en que la validity se actualice tarde
+
+    @api.onchange('date_deadline')
+    def _on_change_date_deadline(self):
+        for record in self:
+            if fields.Datetime.now() and record.date_deadline:
+                delta = record.date_deadline - fields.Datetime.now().date()
+                record.validity = max(delta.days, 0)  # Para evitar numeros negativos
+            else:
+                record.validity = 0
                 
 # --------------------------------------- ACCIONES ----------------------------------------------------------
     def action_accept_offer(self):
@@ -69,3 +81,36 @@ class EstatePropertyOffer(models.Model):
     #Por default todas estan en reject, no hace falta rechazarlas
     #def action_reject_offers(self, accepted_offer):
     #   self.filtered(lambda o: o.property_id == accepted_offer.property_id and o.id != accepted_offer.id).write({"status": "refused"})   
+
+
+
+    #Constraints
+
+    _sql_constraints = [
+    ('unique_offer', 'UNIQUE(partner_id, property_id)', 'Una persona solo puede realizar una unica oferta por cada propiedad.')
+    ]
+
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        
+        for vals in vals_list:
+
+            property_id = self.env["estate.property"].browse(vals["property_id"])
+            offer_ids = property_id.offer_ids 
+
+            if(property_id.state == "new" or property_id.state == "offer received"):
+
+                if offer_ids:
+                    max_price = max(offer_ids.mapped("price") or [0])
+
+                    if vals["price"] < max_price:
+                        raise UserError("No se puede crear una oferta con valor menor a la mejor oferta existente.")
+                else:
+                    
+                    property_id.write({"state": "offer received"})
+                    
+            else:
+                raise UserError("Esta propiedad tiene que ser 'nueva' o 'oferta recibida'")
+
+        return super().create(vals_list)

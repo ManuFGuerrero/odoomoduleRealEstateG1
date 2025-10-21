@@ -1,7 +1,7 @@
 {
     'name': 'Inmobiliaria',
     'version': '1.0',
-    'author': 'Ramiro',
+    'author': 'Alfredo, Ramiro, Manuel',
     'category': 'Real Estate',
     'depends': ['base'],
     'data': [
@@ -11,6 +11,7 @@
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_offer_views.xml',
+        'views/res_users_views.xml',
         'views/real_estate_menuitem.xml',
         
     ],          # para las vistas
